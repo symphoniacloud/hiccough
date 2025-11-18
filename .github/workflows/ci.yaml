@@ -1,0 +1,33 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+# Only allow one run at a time for this workflow
+# See https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#concurrency
+# This workflow will only run once per this workflow name, and per ref (which is the branch or tag)
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Run tests and build
+        run: npm install && npm run local

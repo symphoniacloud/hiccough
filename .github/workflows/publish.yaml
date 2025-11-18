@@ -1,0 +1,58 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+          registry-url: https://registry.npmjs.org
+
+      # Capture the name of the published release to an environment variable
+      # See https://stackoverflow.com/questions/58177786/get-the-current-pushed-tag-in-github-actions
+      - run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
+      # Determine npm dist-tag based on version
+      # Prereleases (containing -alpha, -beta, -rc, etc.) go to their respective tags
+      # Stable releases go to 'latest'
+      - name: Determine npm dist-tag
+        id: dist-tag
+        run: |
+          VERSION="${RELEASE_VERSION#v}"
+          if [[ "$VERSION" == *"-alpha"* ]]; then
+            echo "tag=alpha" >> $GITHUB_OUTPUT
+          elif [[ "$VERSION" == *"-beta"* ]]; then
+            echo "tag=beta" >> $GITHUB_OUTPUT
+          elif [[ "$VERSION" == *"-rc"* ]]; then
+            echo "tag=rc" >> $GITHUB_OUTPUT
+          elif [[ "$VERSION" == *"-"* ]]; then
+            echo "tag=next" >> $GITHUB_OUTPUT
+          else
+            echo "tag=latest" >> $GITHUB_OUTPUT
+          fi
+          echo "Detected version: $VERSION -> tag: $(cat $GITHUB_OUTPUT | grep tag= | cut -d= -f2)"
+
+      # Upgrade npm to latest version to support trusted publishing with scoped packages
+      # See: https://github.com/npm/cli/issues/8678
+      - run: npm install -g npm@latest
+
+      - run: npm install
+
+      # Modify package.json, inserting version attribute
+      - run: npm version $RELEASE_VERSION --no-git-tag-version
+
+      # Perform publish with appropriate tag and provenance, which will also run prepublishOnly
+      # Uses npm provenance (OIDC) instead of long-lived token for security
+      - run: npm publish --access public --provenance --tag ${{ steps.dist-tag.outputs.tag }}
