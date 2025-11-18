@@ -13,6 +13,14 @@
     "template",
     "hiccough"
   ],
+  "homepage": "https://github.com/symphoniacloud/hiccough",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/symphoniacloud/hiccough.git"
+  },
+  "bugs": {
+    "url": "https://github.com/symphoniacloud/hiccough/issues"
+  },
   "type": "module",
   "scripts": {
     "lint": "eslint --max-warnings=0 --fix-dry-run \"{src,test}/**/*.{js,ts}\"",
