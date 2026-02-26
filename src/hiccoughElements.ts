@@ -1,12 +1,21 @@
-import { element, HiccoughAttributes, HiccoughElementDefinition, withAttributes } from './hiccoughElement.js'
+import {
+  element,
+  voidElement,
+  HiccoughAttributes,
+  HiccoughElementDefinition,
+  withAttributes
+} from './hiccoughElement.js'
 
 export function elementf(name: string) {
   return (...def: HiccoughElementDefinition) => element(name, ...def)
 }
 
+export function voidElementf(name: string) {
+  return (attributes?: HiccoughAttributes) => voidElement(name, attributes)
+}
+
 export const htmlPage = elementf('html')
 export const head = elementf('head')
-export const meta = elementf('meta')
 export const script = elementf('script')
 export const body = elementf('body')
 export const h1 = elementf('h1')
@@ -25,16 +34,21 @@ export const b = elementf('b')
 export const span = elementf('span')
 export const div = elementf('div')
 export const form = elementf('form')
-export const input = elementf('input')
 export const label = elementf('label')
 export const button = elementf('button')
+
+export const br = voidElementf('br')
+export const hr = voidElementf('hr')
+export const img = voidElementf('img')
+export const input = voidElementf('input')
+export const meta = voidElementf('meta')
 
 export function title(content: string) {
   return element('title', content)
 }
 
 export function link(rel: string, href: string, attributes?: HiccoughAttributes) {
-  return element('link', { rel, href, ...attributes })
+  return voidElement('link', { rel, href, ...attributes })
 }
 
 export function a(href: string, ...def: HiccoughElementDefinition) {

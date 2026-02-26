@@ -1,6 +1,23 @@
 import { expect, test } from 'vitest'
 import { html } from '../src/hiccoughCore.js'
-import { a, body, div, h1, head, htmlPage, p, table, td, title, tr } from '../src/hiccoughElements.js'
+import {
+  a,
+  body,
+  br,
+  div,
+  h1,
+  head,
+  htmlPage,
+  img,
+  input,
+  link,
+  meta,
+  p,
+  table,
+  td,
+  title,
+  tr
+} from '../src/hiccoughElements.js'
 import { element, withOptions } from '../src/hiccoughElement.js'
 import { DOCTYPE_HTML5 } from '../src/hiccoughPage.js'
 
@@ -63,6 +80,19 @@ baz</span>`)
   expect(html(p(undefined, 'Hello', undefined, 'World'))).toEqual(`<p>HelloWorld</p>`)
 
   expect(html([p('Hello'), p('World')])).toEqual(`<p>Hello</p><p>World</p>`)
+})
+
+test('void elements', () => {
+  expect(html(br())).toEqual(`<br>`)
+  expect(html(img({ src: 'photo.jpg', alt: 'photo' }))).toEqual(`<img src="photo.jpg" alt="photo">`)
+  expect(html(input({ type: 'text', name: 'q' }))).toEqual(`<input type="text" name="q">`)
+  expect(html(meta({ charset: 'utf-8' }))).toEqual(`<meta charset="utf-8">`)
+  expect(html(link('stylesheet', 'style.css'))).toEqual(`<link rel="stylesheet" href="style.css">`)
+  expect(html(div(p('Hello'), br(), p('World')), { newLines: true })).toEqual(`<div>
+  <p>Hello</p>
+  <br>
+  <p>World</p>
+</div>`)
 })
 
 test('hiccough with options', () => {

@@ -14,6 +14,7 @@ export type HiccoughOptions = {
 export type HiccoughElement = {
   isElement: true
   name: string
+  voidElement?: boolean
   attributes?: HiccoughAttributes
   content?: HiccoughContent[]
   options?: HiccoughOptions
@@ -42,6 +43,10 @@ export function element(name: string, ...def: HiccoughElementDefinition): Hiccou
         attributes: first,
         content: rest as HiccoughContent[]
       }
+}
+
+export function voidElement(name: string, attributes?: HiccoughAttributes): HiccoughElement {
+  return { isElement: true, voidElement: true, name, ...(attributes ? { attributes } : {}) }
 }
 
 export function withAttributes(attributes: HiccoughAttributes, element: HiccoughElement): HiccoughElement {
