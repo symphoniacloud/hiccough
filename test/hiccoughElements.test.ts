@@ -26,9 +26,9 @@ import {
   th,
   thead,
   title,
-  tr,
-  type HiccoughElement
+  tr
 } from '../src/hiccoughElements.js'
+import { type HiccoughElement } from '../src/hiccoughElement.js'
 
 const elementfCases: [(...def: string[]) => HiccoughElement, string][] = [
   [htmlPage, 'html'],

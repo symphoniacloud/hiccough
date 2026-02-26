@@ -27,7 +27,7 @@
     "format": "prettier --check \"{src,test}/**/*.{js,ts}\"",
     "test": "vitest run",
     "build": "rm -rf dist && tsc -p tsconfig.build.json",
-    "local": "tsc && npm run lint && npm run test && npm run build",
+    "local": "tsc && npm run format && npm run lint && npm run test && npm run build",
     "prepublishOnly": "npm run local"
   },
   "engines": {
