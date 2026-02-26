@@ -30,6 +30,7 @@ export {
   p,
   i,
   b,
+  span,
   div,
   form,
   input,
