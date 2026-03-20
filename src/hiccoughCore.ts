@@ -56,6 +56,10 @@ function renderElement(input: HiccoughElement, parentOptions: InternalHiccoughOp
           .join(' ')
       : ''
 
+  if (input.voidElement) {
+    return `${preOpenIndentString}<${name}${renderedAttributes}>`
+  }
+
   if (rendered.length === 0) {
     return `${preOpenIndentString}<${name}${renderedAttributes}></${name}>`
   }

@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { element, withAttributes, withOptions } from '../src/hiccoughElement.js'
+import { element, voidElement, withAttributes, withOptions } from '../src/hiccoughElement.js'
 import { p } from '../src/hiccoughElements.js'
 
 test('element', () => {
@@ -17,6 +17,16 @@ test('element', () => {
     isElement: true,
     name: 'p',
     content: ['hello', 'world']
+  })
+})
+
+test('voidElement', () => {
+  expect(voidElement('br')).toEqual({ isElement: true, voidElement: true, name: 'br' })
+  expect(voidElement('img', { src: 'photo.jpg', alt: 'photo' })).toEqual({
+    isElement: true,
+    voidElement: true,
+    name: 'img',
+    attributes: { src: 'photo.jpg', alt: 'photo' }
   })
 })
 

@@ -12,6 +12,7 @@ import {
   h3,
   h4,
   head,
+  HiccoughAttributes,
   HiccoughElement,
   htmlPage,
   i,
@@ -29,12 +30,11 @@ import {
   title,
   tr
 } from '../src/index.js'
-import { span } from '../src/hiccoughElements.js'
+import { br, hr, img, span } from '../src/hiccoughElements.js'
 
 const elementfCases: [(...def: string[]) => HiccoughElement, string][] = [
   [htmlPage, 'html'],
   [head, 'head'],
-  [meta, 'meta'],
   [script, 'script'],
   [body, 'body'],
   [h1, 'h1'],
@@ -53,7 +53,6 @@ const elementfCases: [(...def: string[]) => HiccoughElement, string][] = [
   [span, 'span'],
   [div, 'div'],
   [form, 'form'],
-  [input, 'input'],
   [label, 'label'],
   [button, 'button']
 ]
@@ -62,6 +61,18 @@ test('elementf elements', () => {
   for (const [fn, name] of elementfCases) {
     expect(fn('x')).toMatchObject({ name, content: ['x'] })
   }
+})
+
+const voidElementfCases: [(attributes?: HiccoughAttributes) => HiccoughElement, string][] = [
+  [br, 'br'],
+  [hr, 'hr'],
+  [img, 'img'],
+  [input, 'input'],
+  [meta, 'meta']
+]
+
+test('voidElementf elements', () => {
+  for (const [fn, name] of voidElementfCases) expect(fn()).toMatchObject({ name, voidElement: true })
 })
 
 test('title element', () => {
