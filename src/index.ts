@@ -1,6 +1,7 @@
 export { html } from './hiccoughCore.js'
 export {
   element,
+  voidElement,
   withAttributes,
   withOptions,
   inlineChildren,
@@ -12,6 +13,7 @@ export {
 } from './hiccoughElement.js'
 export {
   elementf,
+  voidElementf,
   htmlPage,
   head,
   meta,
@@ -35,6 +37,9 @@ export {
   input,
   label,
   button,
+  br,
+  hr,
+  img,
   title,
   link,
   a
