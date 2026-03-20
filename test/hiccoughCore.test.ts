@@ -1,6 +1,24 @@
 import { expect, test } from 'vitest'
 import { html } from '../src/hiccoughCore.js'
-import { a, body, div, h1, head, htmlPage, p, table, td, title, tr } from '../src/hiccoughElements.js'
+import {
+  a,
+  body,
+  br,
+  div,
+  h1,
+  head,
+  hr,
+  htmlPage,
+  img,
+  input,
+  link,
+  meta,
+  p,
+  table,
+  td,
+  title,
+  tr
+} from '../src/hiccoughElements.js'
 import { element, withOptions } from '../src/hiccoughElement.js'
 import { DOCTYPE_HTML5 } from '../src/hiccoughPage.js'
 
@@ -12,7 +30,15 @@ test('hiccough smoke test', () => {
         htmlPage(
           { lang: 'en' },
           head(title('Hiccough Test')),
-          body(div({ id: 'top' }, h1('Hello'), table(tr(...['a', 'b', 'c'].map((x) => td(x))))))
+          body(
+            div(
+              { id: 'top' },
+              h1('Hello'),
+              p('Welcome To Hiccouugh'),
+              hr(),
+              table(tr(...['a', 'b', 'c'].map((x) => td(x))))
+            )
+          )
         )
       ],
       {
@@ -28,6 +54,8 @@ test('hiccough smoke test', () => {
   <body>
     <div id="top">
       <h1>Hello</h1>
+      <p>Welcome To Hiccouugh</p>
+      <hr>
       <table>
         <tr>
           <td>a</td>
@@ -63,6 +91,21 @@ baz</span>`)
   expect(html(p(undefined, 'Hello', undefined, 'World'))).toEqual(`<p>HelloWorld</p>`)
 
   expect(html([p('Hello'), p('World')])).toEqual(`<p>Hello</p><p>World</p>`)
+  expect(html([p('Hello'), p('World')])).toEqual(`<p>Hello</p><p>World</p>`)
+})
+
+test('void element rendering', () => {
+  expect(html(br())).toEqual(`<br>`)
+  expect(html(hr())).toEqual('<hr>')
+  expect(html(img({ src: 'photo.jpg', alt: 'photo' }))).toEqual(`<img src="photo.jpg" alt="photo">`)
+  expect(html(input({ type: 'text', name: 'q' }))).toEqual(`<input type="text" name="q">`)
+  expect(html(meta({ charset: 'utf-8' }))).toEqual(`<meta charset="utf-8">`)
+  expect(html(link('stylesheet', 'style.css'))).toEqual(`<link rel="stylesheet" href="style.css">`)
+  expect(html(div(p('Hello'), br(), p('World')), { newLines: true })).toEqual(`<div>
+  <p>Hello</p>
+  <br>
+  <p>World</p>
+</div>`)
 })
 
 test('hiccough with options', () => {
