@@ -217,12 +217,8 @@ World
 })
 
 test('mailTo', () => {
-  expect(html(mailTo('user@example.com'))).toEqual(
-    `<a href="mailto:user@example.com">user@example.com</a>`
-  )
-  expect(html(mailTo('user@example.com', 'Contact Us'))).toEqual(
-    `<a href="mailto:user@example.com">Contact Us</a>`
-  )
+  expect(html(mailTo('user@example.com'))).toEqual(`<a href="mailto:user@example.com">user@example.com</a>`)
+  expect(html(mailTo('user@example.com', 'Contact Us'))).toEqual(`<a href="mailto:user@example.com">Contact Us</a>`)
 })
 
 test('unorderedList and orderedList', () => {
@@ -247,9 +243,7 @@ test('unorderedList and orderedList', () => {
 })
 
 test('includeJs and includeCss', () => {
-  expect(html(includeJs('app.js'), { newLines: true })).toEqual(
-    `<script type="text/javascript" src="app.js"></script>`
-  )
+  expect(html(includeJs('app.js'), { newLines: true })).toEqual(`<script type="text/javascript" src="app.js"></script>`)
   expect(html(includeJs('app.js', 'vendor.js'), { newLines: true })).toEqual(
     `<script type="text/javascript" src="app.js"></script>\n<script type="text/javascript" src="vendor.js"></script>`
   )
