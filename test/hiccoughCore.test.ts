@@ -10,15 +10,20 @@ import {
   hr,
   htmlPage,
   img,
+  includeCss,
+  includeJs,
   input,
   link,
+  mailTo,
   meta,
+  orderedList,
   p,
   span,
   table,
   td,
   title,
-  tr
+  tr,
+  unorderedList
 } from '../src/hiccoughElements.js'
 import { element, raw, withOptions } from '../src/hiccoughElement.js'
 import { DOCTYPE_HTML5 } from '../src/hiccoughPage.js'
@@ -209,4 +214,49 @@ World
   <p>Hello</p>
   <p>World</p>
 </div>`)
+})
+
+test('mailTo', () => {
+  expect(html(mailTo('user@example.com'))).toEqual(
+    `<a href="mailto:user@example.com">user@example.com</a>`
+  )
+  expect(html(mailTo('user@example.com', 'Contact Us'))).toEqual(
+    `<a href="mailto:user@example.com">Contact Us</a>`
+  )
+})
+
+test('unorderedList and orderedList', () => {
+  expect(html(unorderedList(['Apple', 'Banana', 'Cherry']), { newLines: true })).toEqual(`<ul>
+  <li>Apple</li>
+  <li>Banana</li>
+  <li>Cherry</li>
+</ul>`)
+  expect(html(orderedList(['First', 'Second', 'Third']), { newLines: true })).toEqual(`<ol>
+  <li>First</li>
+  <li>Second</li>
+  <li>Third</li>
+</ol>`)
+  expect(html(unorderedList([a('/one', 'One'), a('/two', 'Two')]), { newLines: true })).toEqual(`<ul>
+  <li>
+    <a href="/one">One</a>
+  </li>
+  <li>
+    <a href="/two">Two</a>
+  </li>
+</ul>`)
+})
+
+test('includeJs and includeCss', () => {
+  expect(html(includeJs('app.js'), { newLines: true })).toEqual(
+    `<script type="text/javascript" src="app.js"></script>`
+  )
+  expect(html(includeJs('app.js', 'vendor.js'), { newLines: true })).toEqual(
+    `<script type="text/javascript" src="app.js"></script>\n<script type="text/javascript" src="vendor.js"></script>`
+  )
+  expect(html(includeCss('style.css'), { newLines: true })).toEqual(
+    `<link type="text/css" href="style.css" rel="stylesheet">`
+  )
+  expect(html(includeCss('style.css', 'theme.css'), { newLines: true })).toEqual(
+    `<link type="text/css" href="style.css" rel="stylesheet">\n<link type="text/css" href="theme.css" rel="stylesheet">`
+  )
 })

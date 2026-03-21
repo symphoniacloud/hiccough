@@ -45,6 +45,11 @@ export {
   img,
   title,
   link,
-  a
+  a,
+  mailTo,
+  unorderedList,
+  orderedList,
+  includeJs,
+  includeCss
 } from './hiccoughElements.js'
 export { DOCTYPE_HTML5 } from './hiccoughPage.js'

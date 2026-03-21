@@ -1,6 +1,8 @@
 import {
   element,
   HiccoughAttributes,
+  HiccoughContent,
+  HiccoughElement,
   HiccoughElementDefinition,
   voidElement,
   withAttributes
@@ -53,4 +55,24 @@ export function link(rel: string, href: string, attributes?: HiccoughAttributes)
 
 export function a(href: string, ...def: HiccoughElementDefinition) {
   return withAttributes({ href }, element('a', ...def))
+}
+
+export function mailTo(email: string, ...content: HiccoughContent[]): HiccoughElement {
+  return element('a', { href: `mailto:${email}` }, ...(content.length > 0 ? content : [email]))
+}
+
+export function unorderedList(items: HiccoughContent[]): HiccoughElement {
+  return element('ul', ...items.map((item) => element('li', item)))
+}
+
+export function orderedList(items: HiccoughContent[]): HiccoughElement {
+  return element('ol', ...items.map((item) => element('li', item)))
+}
+
+export function includeJs(...scripts: string[]): HiccoughElement[] {
+  return scripts.map((src) => element('script', { type: 'text/javascript', src }))
+}
+
+export function includeCss(...styles: string[]): HiccoughElement[] {
+  return styles.map((href) => voidElement('link', { type: 'text/css', href, rel: 'stylesheet' }))
 }
