@@ -139,7 +139,12 @@ test('includeJs', () => {
 
 test('includeCss', () => {
   expect(includeCss('style.css')).toEqual([
-    { isElement: true, voidElement: true, name: 'link', attributes: { type: 'text/css', href: 'style.css', rel: 'stylesheet' } }
+    {
+      isElement: true,
+      voidElement: true,
+      name: 'link',
+      attributes: { type: 'text/css', href: 'style.css', rel: 'stylesheet' }
+    }
   ])
   expect(includeCss('style.css', 'theme.css')).toHaveLength(2)
 })
