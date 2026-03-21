@@ -1,6 +1,6 @@
 {
   "name": "@symphoniacloud/hiccough",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A Clojure-inspired HTML generation library for TypeScript",
   "license": "MIT",
   "author": {
@@ -40,11 +40,11 @@
     "@typescript-eslint/eslint-plugin": "8.x",
     "@typescript-eslint/parser": "8.x",
     "eslint": "9.x",
-    "eslint-config-prettier": "9.x",
+    "eslint-config-prettier": "10.x",
     "prettier": "3.x",
     "typescript": "5.x",
     "typescript-eslint": "8.x",
-    "vitest": "3.x"
+    "vitest": "4.x"
   },
   "files": [
     "package.json",
