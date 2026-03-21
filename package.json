@@ -1,6 +1,6 @@
 {
   "name": "@symphoniacloud/hiccough",
-  "version": "0.2.0",
+  "version": "0.0.0",
   "description": "A Clojure-inspired HTML generation library for TypeScript",
   "license": "MIT",
   "author": {
