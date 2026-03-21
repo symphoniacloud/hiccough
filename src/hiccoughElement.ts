@@ -2,7 +2,9 @@ import { isNotNullObject } from './util/types.js'
 
 export type HiccoughAttributes = Record<string, string>
 
-export type HiccoughContent = string | HiccoughElement | undefined
+export type RawHtml = { readonly _raw: string }
+
+export type HiccoughContent = string | HiccoughElement | RawHtml | undefined
 
 export type HiccoughOptions = {
   newLines?: boolean
@@ -24,12 +26,20 @@ function isHiccoughElement(x: unknown): x is HiccoughElement {
   return isNotNullObject(x) && 'isElement' in x && typeof x.isElement === 'boolean' && x.isElement
 }
 
+export function isRawHtml(x: unknown): x is RawHtml {
+  return isNotNullObject(x) && '_raw' in x && typeof x._raw === 'string'
+}
+
 function isHiccoughContent(x: unknown): x is HiccoughContent {
   const xtype = typeof x
-  return xtype === 'undefined' || xtype === 'string' || isHiccoughElement(x)
+  return xtype === 'undefined' || xtype === 'string' || isHiccoughElement(x) || isRawHtml(x)
 }
 
 export type HiccoughElementDefinition = HiccoughContent[] | [HiccoughAttributes | HiccoughContent, ...HiccoughContent[]]
+
+export function raw(html: string): RawHtml {
+  return { _raw: html }
+}
 
 // First element of def can be either attributes or content
 export function element(name: string, ...def: HiccoughElementDefinition): HiccoughElement {

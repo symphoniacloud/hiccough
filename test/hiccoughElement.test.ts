@@ -1,6 +1,34 @@
 import { expect, test } from 'vitest'
-import { element, voidElement, withAttributes, withOptions } from '../src/hiccoughElement.js'
+import { element, isRawHtml, raw, voidElement, withAttributes, withOptions } from '../src/hiccoughElement.js'
 import { p } from '../src/hiccoughElements.js'
+
+test('raw', () => {
+  expect(raw('<b>bold</b>')).toEqual({ _raw: '<b>bold</b>' })
+  expect(raw('')).toEqual({ _raw: '' })
+})
+
+test('isRawHtml', () => {
+  expect(isRawHtml(raw('<b>bold</b>'))).toBe(true)
+  expect(isRawHtml({ _raw: 'hello' })).toBe(true)
+  expect(isRawHtml('hello')).toBe(false)
+  expect(isRawHtml(null)).toBe(false)
+  expect(isRawHtml(undefined)).toBe(false)
+  expect(isRawHtml({ _raw: 42 })).toBe(false)
+  expect(isRawHtml(element('p'))).toBe(false)
+})
+
+test('raw as element content', () => {
+  expect(element('p', raw('<b>bold</b>'))).toEqual({
+    isElement: true,
+    name: 'p',
+    content: [{ _raw: '<b>bold</b>' }]
+  })
+  expect(element('p', 'text', raw('<br>'), 'more')).toEqual({
+    isElement: true,
+    name: 'p',
+    content: ['text', { _raw: '<br>' }, 'more']
+  })
+})
 
 test('element', () => {
   expect(element('p')).toEqual({
