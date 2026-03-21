@@ -14,12 +14,13 @@ import {
   link,
   meta,
   p,
+  span,
   table,
   td,
   title,
   tr
 } from '../src/hiccoughElements.js'
-import { element, withOptions } from '../src/hiccoughElement.js'
+import { element, raw, withOptions } from '../src/hiccoughElement.js'
 import { DOCTYPE_HTML5 } from '../src/hiccoughPage.js'
 
 test('hiccough smoke test', () => {
@@ -35,6 +36,9 @@ test('hiccough smoke test', () => {
               { id: 'top' },
               h1('Hello'),
               p('Welcome To Hiccouugh'),
+              p(span('<script>alert("xss")</script>')),
+              p(raw('<b>bold</b>')),
+              a('/search?q=hello&lang=en', 'Search'),
               hr(),
               table(tr(...['a', 'b', 'c'].map((x) => td(x))))
             )
@@ -55,6 +59,11 @@ test('hiccough smoke test', () => {
     <div id="top">
       <h1>Hello</h1>
       <p>Welcome To Hiccouugh</p>
+      <p>
+        <span>&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;</span>
+      </p>
+      <p><b>bold</b></p>
+      <a href="/search?q=hello&amp;lang=en">Search</a>
       <hr>
       <table>
         <tr>
@@ -71,7 +80,7 @@ test('hiccough smoke test', () => {
 test('hiccough', () => {
   expect(html(element('span'))).toEqual(`<span></span>`)
   expect(html(element('span', 'bar'))).toEqual(`<span>bar</span>`)
-  expect(html(element('span', 'bar', '&nbsp;baz'))).toEqual(`<span>bar&nbsp;baz</span>`)
+  expect(html(element('span', 'bar', raw('&nbsp;baz')))).toEqual(`<span>bar&nbsp;baz</span>`)
 
   expect(html(element('span', { class: 'foo' }))).toEqual(`<span class="foo"></span>`)
   expect(html(element('span', { class: 'foo' }, 'bar'))).toEqual(`<span class="foo">bar</span>`)
@@ -92,6 +101,17 @@ baz</span>`)
 
   expect(html([p('Hello'), p('World')])).toEqual(`<p>Hello</p><p>World</p>`)
   expect(html([p('Hello'), p('World')])).toEqual(`<p>Hello</p><p>World</p>`)
+})
+
+test('escaping', () => {
+  expect(html(element('p', '<b>bold</b>'))).toEqual(`<p>&lt;b&gt;bold&lt;/b&gt;</p>`)
+  expect(html(element('p', 'a & b'))).toEqual(`<p>a &amp; b</p>`)
+  expect(html(element('p', raw('<b>bold</b>')))).toEqual(`<p><b>bold</b></p>`)
+  expect(html(element('p', "it's here"))).toEqual(`<p>it&apos;s here</p>`)
+  expect(html(element('a', { href: '/path?a=1&b=2' }, 'link'))).toEqual(`<a href="/path?a=1&amp;b=2">link</a>`)
+  expect(html(element('p', { 'data-val': '<script>' }, 'text'))).toEqual(`<p data-val="&lt;script&gt;">text</p>`)
+  expect(html(element('p', { class: 'a"b' }, 'text'))).toEqual(`<p class="a&quot;b">text</p>`)
+  expect(html(element('p', { class: "a'b" }, 'text'))).toEqual(`<p class="a&apos;b">text</p>`)
 })
 
 test('void element rendering', () => {

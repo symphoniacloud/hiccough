@@ -1,4 +1,4 @@
-import { HiccoughContent, HiccoughElement, HiccoughOptions } from './hiccoughElement.js'
+import { HiccoughContent, HiccoughElement, HiccoughOptions, isRawHtml } from './hiccoughElement.js'
 import { Mandatory } from './util/types.js'
 
 export function html(input: HiccoughContent | HiccoughContent[], options: HiccoughOptions = {}): string {
@@ -14,10 +14,17 @@ export function html(input: HiccoughContent | HiccoughContent[], options: Hiccou
 
 type InternalHiccoughOptions = Mandatory<HiccoughOptions, 'newLines' | 'indentCount' | 'eachIndent'>
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;')
+}
+
 function renderContentArray(content: HiccoughContent[], options: InternalHiccoughOptions) {
-  const renderedElements = content
-    .map((x) => renderContent(x, options))
-    .filter((x) => x !== undefined) as RenderedContent[]
+  const renderedElements = content.map((x) => renderContent(x, options)).filter((x) => x !== undefined)
 
   return {
     rendered: renderedElements.map(({ rendered }) => rendered).join(`${options.newLines ? '\n' : ''}`),
@@ -29,7 +36,8 @@ type RenderedContent = { rendered: string; hasChildren: boolean }
 
 function renderContent(content: HiccoughContent, options: InternalHiccoughOptions): RenderedContent | undefined {
   if (typeof content === 'undefined') return undefined
-  if (typeof content === 'string') return { rendered: content, hasChildren: false }
+  if (typeof content === 'string') return { rendered: escapeHtml(content), hasChildren: false }
+  if (isRawHtml(content)) return { rendered: content._raw, hasChildren: false }
   return {
     rendered: `${renderElement(content, {
       ...options,
@@ -52,7 +60,7 @@ function renderElement(input: HiccoughElement, parentOptions: InternalHiccoughOp
     renderedAttributes = attributes
       ? ' ' +
         Object.entries(attributes)
-          .map(([k, v]) => `${k}="${v}"`)
+          .map(([k, v]) => `${k}="${escapeHtml(v)}"`)
           .join(' ')
       : ''
 
