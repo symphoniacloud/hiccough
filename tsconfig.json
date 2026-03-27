@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "include": ["src/**/*.ts", "test/**/*.ts"],
+  "include": ["src/**/*.ts", "test/**/*.ts", "test/**/*.js"],
   "exclude": ["node_modules", "dist"],
   "compilerOptions": {
     // ** Modules **
@@ -21,11 +21,9 @@
 
     // ** Completeness **
     "skipLibCheck": true,
+    "allowJs": true,
 
     // ** Emit **
-    "outDir": "dist",
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true
+    "noEmit": true
   }
 }

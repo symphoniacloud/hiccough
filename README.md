@@ -1,6 +1,6 @@
 # Hiccough
 
-A HTML generation library / "internal DSL" for TypeScript. Generate HTML using composable functions instead of external templates.
+A HTML generation library / "internal DSL" for JavaScript and TypeScript. Generate HTML using composable functions instead of external templates. Works in Node and the browser.
 
 Inspired by using [hiccup](https://github.com/weavejester/hiccup) many years ago.
 
@@ -74,14 +74,15 @@ test('hiccough smoke test', () => {
 
 ## Features
 
-- Type-checked HTML generation within standard TS files
 - Composable element functions, allowing for loops, conditionals, etc.
 - Support for attributes and nested content
 - HTML-escaped by default, with a `raw()` escape hatch for trusted content
 - Optional formatting with indentation and newlines
 - No runtime dependencies
+- When using TypeScript it provides type-checked HTML generation in standard TS file
+- Works in Node and browser
 
-## Breaking change between Hiccough 0.1 and 0.2
+## Breaking change between Hiccough 0.1 and 0.2 / 1.0
 
 Hiccough 0.1 doesn't escape strings by default, while 0.2 does.
 
@@ -109,7 +110,7 @@ I wanted something more structured than just verbatim strings.
 I remembered that back in 2013 or so I'd used [hiccup](https://github.com/weavejester/hiccup) when building some web apps
 in Clojure. So I looked to try to replicate that with TypeScript, and it worked surprisingly well (I thought so anyway. :) ).
 
-So here's Hiccough - Hiccup, but for TypeScript. It doesn't do everything Hiccup does, but it's enough for me.
+So here's Hiccough - Hiccup, but for JavaScript and TypeScript.
 
 ## API
 

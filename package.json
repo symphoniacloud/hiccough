@@ -1,7 +1,7 @@
 {
   "name": "@symphoniacloud/hiccough",
   "version": "0.0.0",
-  "description": "A Clojure-inspired HTML generation library for TypeScript",
+  "description": "A Clojure-inspired HTML generation library for JavaScript and TypeScript",
   "license": "MIT",
   "author": {
     "email": "mike@symphonia.io",
@@ -11,7 +11,8 @@
   "keywords": [
     "html",
     "template",
-    "hiccough"
+    "hiccough",
+    "browser"
   ],
   "homepage": "https://github.com/symphoniacloud/hiccough",
   "repository": {
