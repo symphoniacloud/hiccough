@@ -82,9 +82,9 @@ test('hiccough smoke test', () => {
 - When using TypeScript it provides type-checked HTML generation in standard TS file
 - Works in Node and browser
 
-## Breaking change between Hiccough 0.1 and 0.2 / 1.0
+## Breaking change between Hiccough 0.1 and 1.0
 
-Hiccough 0.1 doesn't escape strings by default, while 0.2 does.
+Hiccough 0.1 doesn't escape strings by default, while 1.0 does.
 
 In Hiccough 0.1, strings are passed through as-is, so you could write HTML entities or inline HTML directly:
 
@@ -93,7 +93,7 @@ html(p('Hello &amp; welcome'))
 html(div('&nbsp;'))
 ```
 
-In Hiccough 0.2, strings are escaped automatically, so those same calls would produce escaped output. To pass through raw HTML or entities, use the `raw()` function:
+In Hiccough 1.0, strings are escaped automatically, so those same calls would produce escaped output. To pass through raw HTML or entities, use the `raw()` function:
 
 ```typescript
 html(p('Hello & welcome'))       // & is escaped to &amp; automatically
@@ -108,7 +108,7 @@ both for pages, and fragments returned by HTMX-related calls. I didn't want to u
 I wanted something more structured than just verbatim strings.
 
 I remembered that back in 2013 or so I'd used [hiccup](https://github.com/weavejester/hiccup) when building some web apps
-in Clojure. So I looked to try to replicate that with TypeScript, and it worked surprisingly well (I thought so anyway. :) ).
+in Clojure. So I looked to try to replicate that with TypeScript, and it worked surprisingly well (I thought so anyway.)
 
 So here's Hiccough - Hiccup, but for JavaScript and TypeScript.
 
