@@ -29,7 +29,7 @@ import {
 import { element, raw, withOptions } from '../src/hiccoughElement.ts'
 import { DOCTYPE_HTML5 } from '../src/hiccoughPage.ts'
 
-void test('hiccough smoke test', () => {
+test('hiccough smoke test', () => {
   assert.equal(
     html(
       [
@@ -84,7 +84,7 @@ void test('hiccough smoke test', () => {
   )
 })
 
-void test('hiccough', () => {
+test('hiccough', () => {
   assert.equal(html(element('span')), `<span></span>`)
   assert.equal(html(element('span', 'bar')), `<span>bar</span>`)
   assert.equal(html(element('span', 'bar', raw('&nbsp;baz'))), `<span>bar&nbsp;baz</span>`)
@@ -114,7 +114,7 @@ baz</span>`
   assert.equal(html([p('Hello'), p('World')]), `<p>Hello</p><p>World</p>`)
 })
 
-void test('escaping', () => {
+test('escaping', () => {
   assert.equal(html(element('p', '<b>bold</b>')), `<p>&lt;b&gt;bold&lt;/b&gt;</p>`)
   assert.equal(html(element('p', 'a & b')), `<p>a &amp; b</p>`)
   assert.equal(html(element('p', raw('<b>bold</b>'))), `<p><b>bold</b></p>`)
@@ -125,7 +125,7 @@ void test('escaping', () => {
   assert.equal(html(element('p', { class: "a'b" }, 'text')), `<p class="a&apos;b">text</p>`)
 })
 
-void test('void element rendering', () => {
+test('void element rendering', () => {
   assert.equal(html(br()), `<br>`)
   assert.equal(html(hr()), '<hr>')
   assert.equal(html(img({ src: 'photo.jpg', alt: 'photo' })), `<img src="photo.jpg" alt="photo">`)
@@ -142,7 +142,7 @@ void test('void element rendering', () => {
   )
 })
 
-void test('hiccough with options', () => {
+test('hiccough with options', () => {
   const indentAndNewLine = {
     eachIndent: '  ',
     newLines: true
@@ -241,12 +241,12 @@ World
   )
 })
 
-void test('mailTo', () => {
+test('mailTo', () => {
   assert.equal(html(mailTo('user@example.com')), `<a href="mailto:user@example.com">user@example.com</a>`)
   assert.equal(html(mailTo('user@example.com', 'Contact Us')), `<a href="mailto:user@example.com">Contact Us</a>`)
 })
 
-void test('unorderedList and orderedList', () => {
+test('unorderedList and orderedList', () => {
   assert.equal(
     html(unorderedList(['Apple', 'Banana', 'Cherry']), { newLines: true }),
     `<ul>
@@ -276,7 +276,7 @@ void test('unorderedList and orderedList', () => {
   )
 })
 
-void test('includeJs and includeCss', () => {
+test('includeJs and includeCss', () => {
   assert.equal(html(includeJs('app.js'), { newLines: true }), `<script type="text/javascript" src="app.js"></script>`)
   assert.equal(
     html(includeJs('app.js', 'vendor.js'), { newLines: true }),

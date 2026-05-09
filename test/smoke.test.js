@@ -19,7 +19,7 @@ import {
   raw
 } from '../src/index.ts'
 
-void test('javascript smoke test', () => {
+test('javascript smoke test', () => {
   assert.equal(
     html(
       [

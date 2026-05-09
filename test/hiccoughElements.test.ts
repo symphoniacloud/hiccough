@@ -63,7 +63,7 @@ const elementfCases: [(...def: string[]) => HiccoughElement, string][] = [
   [button, 'button']
 ]
 
-void test('elementf elements', () => {
+test('elementf elements', () => {
   for (const [fn, name] of elementfCases) {
     assert.partialDeepStrictEqual(fn('x'), { name, content: ['x'] })
   }
@@ -77,22 +77,22 @@ const voidElementfCases: [(attributes?: HiccoughAttributes) => HiccoughElement, 
   [meta, 'meta']
 ]
 
-void test('voidElementf elements', () => {
+test('voidElementf elements', () => {
   for (const [fn, name] of voidElementfCases) assert.partialDeepStrictEqual(fn(), { name, voidElement: true })
 })
 
-void test('title element', () => {
+test('title element', () => {
   assert.partialDeepStrictEqual(title('Hello'), { name: 'title', content: ['Hello'] })
 })
 
-void test('link element', () => {
+test('link element', () => {
   assert.partialDeepStrictEqual(link('stylesheet', 'style.css'), {
     name: 'link',
     attributes: { rel: 'stylesheet', href: 'style.css' }
   })
 })
 
-void test('a element', () => {
+test('a element', () => {
   assert.partialDeepStrictEqual(a('/path', 'click me'), {
     name: 'a',
     attributes: { href: '/path' },
@@ -100,7 +100,7 @@ void test('a element', () => {
   })
 })
 
-void test('mailTo element', () => {
+test('mailTo element', () => {
   assert.partialDeepStrictEqual(mailTo('user@example.com'), {
     name: 'a',
     attributes: { href: 'mailto:user@example.com' },
@@ -113,7 +113,7 @@ void test('mailTo element', () => {
   })
 })
 
-void test('unorderedList element', () => {
+test('unorderedList element', () => {
   assert.deepEqual(unorderedList(['a', 'b']), {
     isElement: true,
     name: 'ul',
@@ -124,7 +124,7 @@ void test('unorderedList element', () => {
   })
 })
 
-void test('orderedList element', () => {
+test('orderedList element', () => {
   assert.deepEqual(orderedList(['a', 'b']), {
     isElement: true,
     name: 'ol',
@@ -135,14 +135,14 @@ void test('orderedList element', () => {
   })
 })
 
-void test('includeJs', () => {
+test('includeJs', () => {
   assert.deepEqual(includeJs('app.js'), [
     { isElement: true, name: 'script', attributes: { type: 'text/javascript', src: 'app.js' }, content: [] }
   ])
   assert.equal(includeJs('app.js', 'vendor.js').length, 2)
 })
 
-void test('includeCss', () => {
+test('includeCss', () => {
   assert.deepEqual(includeCss('style.css'), [
     {
       isElement: true,
@@ -154,7 +154,7 @@ void test('includeCss', () => {
   assert.equal(includeCss('style.css', 'theme.css').length, 2)
 })
 
-void test('nested table elements', () => {
+test('nested table elements', () => {
   assert.deepEqual(table(tr(td('a'), td('b'))), {
     isElement: true,
     name: 'table',

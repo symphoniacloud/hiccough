@@ -3,12 +3,12 @@ import assert from 'node:assert/strict'
 import { element, isRawHtml, raw, voidElement, withAttributes, withOptions } from '../src/hiccoughElement.ts'
 import { p } from '../src/hiccoughElements.ts'
 
-void test('raw', () => {
+test('raw', () => {
   assert.deepEqual(raw('<b>bold</b>'), { _raw: '<b>bold</b>' })
   assert.deepEqual(raw(''), { _raw: '' })
 })
 
-void test('isRawHtml', () => {
+test('isRawHtml', () => {
   assert.equal(isRawHtml(raw('<b>bold</b>')), true)
   assert.equal(isRawHtml({ _raw: 'hello' }), true)
   assert.equal(isRawHtml('hello'), false)
@@ -18,7 +18,7 @@ void test('isRawHtml', () => {
   assert.equal(isRawHtml(element('p')), false)
 })
 
-void test('raw as element content', () => {
+test('raw as element content', () => {
   assert.deepEqual(element('p', raw('<b>bold</b>')), {
     isElement: true,
     name: 'p',
@@ -31,7 +31,7 @@ void test('raw as element content', () => {
   })
 })
 
-void test('element', () => {
+test('element', () => {
   assert.deepEqual(element('p'), {
     isElement: true,
     name: 'p',
@@ -49,7 +49,7 @@ void test('element', () => {
   })
 })
 
-void test('voidElement', () => {
+test('voidElement', () => {
   assert.deepEqual(voidElement('br'), { isElement: true, voidElement: true, name: 'br' })
   assert.deepEqual(voidElement('img', { src: 'photo.jpg', alt: 'photo' }), {
     isElement: true,
@@ -59,7 +59,7 @@ void test('voidElement', () => {
   })
 })
 
-void test('element with nesting', () => {
+test('element with nesting', () => {
   assert.deepEqual(element('div', element('p', 'hello')), {
     isElement: true,
     name: 'div',
@@ -106,7 +106,7 @@ void test('element with nesting', () => {
   })
 })
 
-void test('elementWithAttributes', () => {
+test('elementWithAttributes', () => {
   assert.deepEqual(element('p', { id: 'myTag' }), {
     isElement: true,
     name: 'p',
@@ -140,7 +140,7 @@ void test('elementWithAttributes', () => {
   })
 })
 
-void test('with attributes', () => {
+test('with attributes', () => {
   assert.deepEqual(withAttributes({ class: 'myClass', id: 'pOne' }, p('Hello World')), {
     isElement: true,
     name: 'p',
@@ -152,7 +152,7 @@ void test('with attributes', () => {
   })
 })
 
-void test('with options', () => {
+test('with options', () => {
   assert.deepEqual(withOptions({ newLines: true }, element('p')), {
     isElement: true,
     name: 'p',
