@@ -1,4 +1,5 @@
-import { expect, test } from 'vitest'
+import { test } from 'node:test'
+import assert from 'node:assert/strict'
 import {
   html,
   DOCTYPE_HTML5,
@@ -16,10 +17,10 @@ import {
   tr,
   td,
   raw
-} from '../src/index.js'
+} from '../src/index.ts'
 
-test('javascript smoke test', () => {
-  expect(
+void test('javascript smoke test', () => {
+  assert.equal(
     html(
       [
         DOCTYPE_HTML5,
@@ -41,8 +42,8 @@ test('javascript smoke test', () => {
         )
       ],
       { newLines: true, eachIndent: '  ' }
-    )
-  ).toEqual(`<!doctype html>
+    ),
+    `<!doctype html>
 <html lang="en">
   <head>
     <title>Hiccough JS Test</title>
@@ -66,5 +67,6 @@ test('javascript smoke test', () => {
       </table>
     </div>
   </body>
-</html>`)
+</html>`
+  )
 })

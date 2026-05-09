@@ -1,12 +1,12 @@
 import {
   element,
-  HiccoughAttributes,
-  HiccoughContent,
-  HiccoughElement,
-  HiccoughElementDefinition,
+  type HiccoughAttributes,
+  type HiccoughContent,
+  type HiccoughElement,
+  type HiccoughElementDefinition,
   voidElement,
   withAttributes
-} from './hiccoughElement.js'
+} from './hiccoughElement.ts'
 
 export function elementf(name: string) {
   return (...def: HiccoughElementDefinition) => element(name, ...def)

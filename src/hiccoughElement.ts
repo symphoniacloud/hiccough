@@ -1,4 +1,4 @@
-import { isNotNullObject } from './util/types.js'
+import { isNotNullObject } from './util/types.ts'
 
 export type HiccoughAttributes = Record<string, string>
 

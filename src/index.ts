@@ -1,4 +1,4 @@
-export { html } from './hiccoughCore.js'
+export { html } from './hiccoughCore.ts'
 export {
   element,
   voidElement,
@@ -12,7 +12,7 @@ export {
   type HiccoughElement,
   type HiccoughElementDefinition,
   type HiccoughOptions
-} from './hiccoughElement.js'
+} from './hiccoughElement.ts'
 export {
   elementf,
   voidElementf,
@@ -51,5 +51,5 @@ export {
   orderedList,
   includeJs,
   includeCss
-} from './hiccoughElements.js'
-export { DOCTYPE_HTML5 } from './hiccoughPage.js'
+} from './hiccoughElements.ts'
+export { DOCTYPE_HTML5 } from './hiccoughPage.ts'

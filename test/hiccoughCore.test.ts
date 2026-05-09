@@ -1,5 +1,6 @@
-import { expect, test } from 'vitest'
-import { html } from '../src/hiccoughCore.js'
+import { test } from 'node:test'
+import assert from 'node:assert/strict'
+import { html } from '../src/hiccoughCore.ts'
 import {
   a,
   body,
@@ -24,12 +25,12 @@ import {
   title,
   tr,
   unorderedList
-} from '../src/hiccoughElements.js'
-import { element, raw, withOptions } from '../src/hiccoughElement.js'
-import { DOCTYPE_HTML5 } from '../src/hiccoughPage.js'
+} from '../src/hiccoughElements.ts'
+import { element, raw, withOptions } from '../src/hiccoughElement.ts'
+import { DOCTYPE_HTML5 } from '../src/hiccoughPage.ts'
 
-test('hiccough smoke test', () => {
-  expect(
+void test('hiccough smoke test', () => {
+  assert.equal(
     html(
       [
         DOCTYPE_HTML5,
@@ -54,8 +55,8 @@ test('hiccough smoke test', () => {
         newLines: true,
         eachIndent: '  '
       }
-    )
-  ).toEqual(`<!doctype html>
+    ),
+    `<!doctype html>
 <html lang="en">
   <head>
     <title>Hiccough Test</title>
@@ -79,94 +80,114 @@ test('hiccough smoke test', () => {
       </table>
     </div>
   </body>
-</html>`)
+</html>`
+  )
 })
 
-test('hiccough', () => {
-  expect(html(element('span'))).toEqual(`<span></span>`)
-  expect(html(element('span', 'bar'))).toEqual(`<span>bar</span>`)
-  expect(html(element('span', 'bar', raw('&nbsp;baz')))).toEqual(`<span>bar&nbsp;baz</span>`)
+void test('hiccough', () => {
+  assert.equal(html(element('span')), `<span></span>`)
+  assert.equal(html(element('span', 'bar')), `<span>bar</span>`)
+  assert.equal(html(element('span', 'bar', raw('&nbsp;baz'))), `<span>bar&nbsp;baz</span>`)
 
-  expect(html(element('span', { class: 'foo' }))).toEqual(`<span class="foo"></span>`)
-  expect(html(element('span', { class: 'foo' }, 'bar'))).toEqual(`<span class="foo">bar</span>`)
-  expect(html(element('span', { class: 'foo' }, '\nbar', '\nbaz'))).toEqual(`<span class="foo">
+  assert.equal(html(element('span', { class: 'foo' })), `<span class="foo"></span>`)
+  assert.equal(html(element('span', { class: 'foo' }, 'bar')), `<span class="foo">bar</span>`)
+  assert.equal(
+    html(element('span', { class: 'foo' }, '\nbar', '\nbaz')),
+    `<span class="foo">
 bar
-baz</span>`)
+baz</span>`
+  )
 
-  expect(html(tr(td('a')))).toEqual(`<tr><td>a</td></tr>`)
-  expect(html(tr(td('a'), td('b')))).toEqual(`<tr><td>a</td><td>b</td></tr>`)
-  expect(html(table(tr(td('a'), td('b'))))).toEqual(`<table><tr><td>a</td><td>b</td></tr></table>`)
-  expect(html(table({ class: 'table' }, tr(...['a', 'b', 'c'].map((x) => td(x)))))).toEqual(
+  assert.equal(html(tr(td('a'))), `<tr><td>a</td></tr>`)
+  assert.equal(html(tr(td('a'), td('b'))), `<tr><td>a</td><td>b</td></tr>`)
+  assert.equal(html(table(tr(td('a'), td('b')))), `<table><tr><td>a</td><td>b</td></tr></table>`)
+  assert.equal(
+    html(table({ class: 'table' }, tr(...['a', 'b', 'c'].map((x) => td(x))))),
     `<table class="table"><tr><td>a</td><td>b</td><td>c</td></tr></table>`
   )
 
-  expect(html(div(p('Hello'), p('World')))).toEqual(`<div><p>Hello</p><p>World</p></div>`)
-  expect(html(div(...[p('Hello'), p('World')]))).toEqual(`<div><p>Hello</p><p>World</p></div>`)
-  expect(html(p(undefined, 'Hello', undefined, 'World'))).toEqual(`<p>HelloWorld</p>`)
+  assert.equal(html(div(p('Hello'), p('World'))), `<div><p>Hello</p><p>World</p></div>`)
+  assert.equal(html(div(...[p('Hello'), p('World')])), `<div><p>Hello</p><p>World</p></div>`)
+  assert.equal(html(p(undefined, 'Hello', undefined, 'World')), `<p>HelloWorld</p>`)
 
-  expect(html([p('Hello'), p('World')])).toEqual(`<p>Hello</p><p>World</p>`)
-  expect(html([p('Hello'), p('World')])).toEqual(`<p>Hello</p><p>World</p>`)
+  assert.equal(html([p('Hello'), p('World')]), `<p>Hello</p><p>World</p>`)
+  assert.equal(html([p('Hello'), p('World')]), `<p>Hello</p><p>World</p>`)
 })
 
-test('escaping', () => {
-  expect(html(element('p', '<b>bold</b>'))).toEqual(`<p>&lt;b&gt;bold&lt;/b&gt;</p>`)
-  expect(html(element('p', 'a & b'))).toEqual(`<p>a &amp; b</p>`)
-  expect(html(element('p', raw('<b>bold</b>')))).toEqual(`<p><b>bold</b></p>`)
-  expect(html(element('p', "it's here"))).toEqual(`<p>it&apos;s here</p>`)
-  expect(html(element('a', { href: '/path?a=1&b=2' }, 'link'))).toEqual(`<a href="/path?a=1&amp;b=2">link</a>`)
-  expect(html(element('p', { 'data-val': '<script>' }, 'text'))).toEqual(`<p data-val="&lt;script&gt;">text</p>`)
-  expect(html(element('p', { class: 'a"b' }, 'text'))).toEqual(`<p class="a&quot;b">text</p>`)
-  expect(html(element('p', { class: "a'b" }, 'text'))).toEqual(`<p class="a&apos;b">text</p>`)
+void test('escaping', () => {
+  assert.equal(html(element('p', '<b>bold</b>')), `<p>&lt;b&gt;bold&lt;/b&gt;</p>`)
+  assert.equal(html(element('p', 'a & b')), `<p>a &amp; b</p>`)
+  assert.equal(html(element('p', raw('<b>bold</b>'))), `<p><b>bold</b></p>`)
+  assert.equal(html(element('p', "it's here")), `<p>it&apos;s here</p>`)
+  assert.equal(html(element('a', { href: '/path?a=1&b=2' }, 'link')), `<a href="/path?a=1&amp;b=2">link</a>`)
+  assert.equal(html(element('p', { 'data-val': '<script>' }, 'text')), `<p data-val="&lt;script&gt;">text</p>`)
+  assert.equal(html(element('p', { class: 'a"b' }, 'text')), `<p class="a&quot;b">text</p>`)
+  assert.equal(html(element('p', { class: "a'b" }, 'text')), `<p class="a&apos;b">text</p>`)
 })
 
-test('void element rendering', () => {
-  expect(html(br())).toEqual(`<br>`)
-  expect(html(hr())).toEqual('<hr>')
-  expect(html(img({ src: 'photo.jpg', alt: 'photo' }))).toEqual(`<img src="photo.jpg" alt="photo">`)
-  expect(html(input({ type: 'text', name: 'q' }))).toEqual(`<input type="text" name="q">`)
-  expect(html(meta({ charset: 'utf-8' }))).toEqual(`<meta charset="utf-8">`)
-  expect(html(link('stylesheet', 'style.css'))).toEqual(`<link rel="stylesheet" href="style.css">`)
-  expect(html(div(p('Hello'), br(), p('World')), { newLines: true })).toEqual(`<div>
+void test('void element rendering', () => {
+  assert.equal(html(br()), `<br>`)
+  assert.equal(html(hr()), '<hr>')
+  assert.equal(html(img({ src: 'photo.jpg', alt: 'photo' })), `<img src="photo.jpg" alt="photo">`)
+  assert.equal(html(input({ type: 'text', name: 'q' })), `<input type="text" name="q">`)
+  assert.equal(html(meta({ charset: 'utf-8' })), `<meta charset="utf-8">`)
+  assert.equal(html(link('stylesheet', 'style.css')), `<link rel="stylesheet" href="style.css">`)
+  assert.equal(
+    html(div(p('Hello'), br(), p('World')), { newLines: true }),
+    `<div>
   <p>Hello</p>
   <br>
   <p>World</p>
-</div>`)
+</div>`
+  )
 })
 
-test('hiccough with options', () => {
+void test('hiccough with options', () => {
   const indentAndNewLine = {
     eachIndent: '  ',
     newLines: true
   }
 
-  expect(html(element('span', { class: 'foo' }, 'bar'), indentAndNewLine)).toEqual(`<span class="foo">bar</span>`)
+  assert.equal(html(element('span', { class: 'foo' }, 'bar'), indentAndNewLine), `<span class="foo">bar</span>`)
 
-  expect(html(div({ class: 'foo' }, p('Hello'), p('World')), indentAndNewLine)).toEqual(`<div class="foo">
+  assert.equal(
+    html(div({ class: 'foo' }, p('Hello'), p('World')), indentAndNewLine),
+    `<div class="foo">
   <p>Hello</p>
   <p>World</p>
-</div>`)
+</div>`
+  )
 
-  expect(html(p('Hello', 'World', 'Again'), indentAndNewLine)).toEqual(`<p>
+  assert.equal(
+    html(p('Hello', 'World', 'Again'), indentAndNewLine),
+    `<p>
 Hello
 World
 Again
-</p>`)
+</p>`
+  )
 
-  expect(html(table(tr(td('a'), td('b'))), indentAndNewLine)).toEqual(`<table>
+  assert.equal(
+    html(table(tr(td('a'), td('b'))), indentAndNewLine),
+    `<table>
   <tr>
     <td>a</td>
     <td>b</td>
   </tr>
-</table>`)
+</table>`
+  )
 
-  expect(html(table(tr(undefined, td('a'), undefined, td('b'), undefined)), indentAndNewLine)).toEqual(`<table>
+  assert.equal(
+    html(table(tr(undefined, td('a'), undefined, td('b'), undefined)), indentAndNewLine),
+    `<table>
   <tr>
     <td>a</td>
     <td>b</td>
   </tr>
-</table>`)
+</table>`
+  )
 
-  expect(
+  assert.equal(
     html(
       table(
         withOptions(
@@ -178,13 +199,15 @@ Again
         )
       ),
       indentAndNewLine
-    )
-  ).toEqual(`<table>
+    ),
+    `<table>
   <tr><td>a</td><td>b</td></tr>
-</table>`)
+</table>`
+  )
 
-  expect(html(div(p('Hello', 'World', a('https://example.com', 'example')), p('Hello'), p('World')), indentAndNewLine))
-    .toEqual(`<div>
+  assert.equal(
+    html(div(p('Hello', 'World', a('https://example.com', 'example')), p('Hello'), p('World')), indentAndNewLine),
+    `<div>
   <p>
 Hello
 World
@@ -192,9 +215,10 @@ World
   </p>
   <p>Hello</p>
   <p>World</p>
-</div>`)
+</div>`
+  )
 
-  expect(
+  assert.equal(
     html(
       div(
         withOptions(
@@ -208,49 +232,62 @@ World
         p('World')
       ),
       indentAndNewLine
-    )
-  ).toEqual(`<div>
+    ),
+    `<div>
   <p>HelloWorld<a href="https://example.com">example</a></p>
   <p>Hello</p>
   <p>World</p>
-</div>`)
+</div>`
+  )
 })
 
-test('mailTo', () => {
-  expect(html(mailTo('user@example.com'))).toEqual(`<a href="mailto:user@example.com">user@example.com</a>`)
-  expect(html(mailTo('user@example.com', 'Contact Us'))).toEqual(`<a href="mailto:user@example.com">Contact Us</a>`)
+void test('mailTo', () => {
+  assert.equal(html(mailTo('user@example.com')), `<a href="mailto:user@example.com">user@example.com</a>`)
+  assert.equal(html(mailTo('user@example.com', 'Contact Us')), `<a href="mailto:user@example.com">Contact Us</a>`)
 })
 
-test('unorderedList and orderedList', () => {
-  expect(html(unorderedList(['Apple', 'Banana', 'Cherry']), { newLines: true })).toEqual(`<ul>
+void test('unorderedList and orderedList', () => {
+  assert.equal(
+    html(unorderedList(['Apple', 'Banana', 'Cherry']), { newLines: true }),
+    `<ul>
   <li>Apple</li>
   <li>Banana</li>
   <li>Cherry</li>
-</ul>`)
-  expect(html(orderedList(['First', 'Second', 'Third']), { newLines: true })).toEqual(`<ol>
+</ul>`
+  )
+  assert.equal(
+    html(orderedList(['First', 'Second', 'Third']), { newLines: true }),
+    `<ol>
   <li>First</li>
   <li>Second</li>
   <li>Third</li>
-</ol>`)
-  expect(html(unorderedList([a('/one', 'One'), a('/two', 'Two')]), { newLines: true })).toEqual(`<ul>
+</ol>`
+  )
+  assert.equal(
+    html(unorderedList([a('/one', 'One'), a('/two', 'Two')]), { newLines: true }),
+    `<ul>
   <li>
     <a href="/one">One</a>
   </li>
   <li>
     <a href="/two">Two</a>
   </li>
-</ul>`)
+</ul>`
+  )
 })
 
-test('includeJs and includeCss', () => {
-  expect(html(includeJs('app.js'), { newLines: true })).toEqual(`<script type="text/javascript" src="app.js"></script>`)
-  expect(html(includeJs('app.js', 'vendor.js'), { newLines: true })).toEqual(
+void test('includeJs and includeCss', () => {
+  assert.equal(html(includeJs('app.js'), { newLines: true }), `<script type="text/javascript" src="app.js"></script>`)
+  assert.equal(
+    html(includeJs('app.js', 'vendor.js'), { newLines: true }),
     `<script type="text/javascript" src="app.js"></script>\n<script type="text/javascript" src="vendor.js"></script>`
   )
-  expect(html(includeCss('style.css'), { newLines: true })).toEqual(
+  assert.equal(
+    html(includeCss('style.css'), { newLines: true }),
     `<link type="text/css" href="style.css" rel="stylesheet">`
   )
-  expect(html(includeCss('style.css', 'theme.css'), { newLines: true })).toEqual(
+  assert.equal(
+    html(includeCss('style.css', 'theme.css'), { newLines: true }),
     `<link type="text/css" href="style.css" rel="stylesheet">\n<link type="text/css" href="theme.css" rel="stylesheet">`
   )
 })

@@ -1,56 +1,57 @@
-import { expect, test } from 'vitest'
-import { element, isRawHtml, raw, voidElement, withAttributes, withOptions } from '../src/hiccoughElement.js'
-import { p } from '../src/hiccoughElements.js'
+import { test } from 'node:test'
+import assert from 'node:assert/strict'
+import { element, isRawHtml, raw, voidElement, withAttributes, withOptions } from '../src/hiccoughElement.ts'
+import { p } from '../src/hiccoughElements.ts'
 
-test('raw', () => {
-  expect(raw('<b>bold</b>')).toEqual({ _raw: '<b>bold</b>' })
-  expect(raw('')).toEqual({ _raw: '' })
+void test('raw', () => {
+  assert.deepEqual(raw('<b>bold</b>'), { _raw: '<b>bold</b>' })
+  assert.deepEqual(raw(''), { _raw: '' })
 })
 
-test('isRawHtml', () => {
-  expect(isRawHtml(raw('<b>bold</b>'))).toBe(true)
-  expect(isRawHtml({ _raw: 'hello' })).toBe(true)
-  expect(isRawHtml('hello')).toBe(false)
-  expect(isRawHtml(null)).toBe(false)
-  expect(isRawHtml(undefined)).toBe(false)
-  expect(isRawHtml({ _raw: 42 })).toBe(false)
-  expect(isRawHtml(element('p'))).toBe(false)
+void test('isRawHtml', () => {
+  assert.equal(isRawHtml(raw('<b>bold</b>')), true)
+  assert.equal(isRawHtml({ _raw: 'hello' }), true)
+  assert.equal(isRawHtml('hello'), false)
+  assert.equal(isRawHtml(null), false)
+  assert.equal(isRawHtml(undefined), false)
+  assert.equal(isRawHtml({ _raw: 42 }), false)
+  assert.equal(isRawHtml(element('p')), false)
 })
 
-test('raw as element content', () => {
-  expect(element('p', raw('<b>bold</b>'))).toEqual({
+void test('raw as element content', () => {
+  assert.deepEqual(element('p', raw('<b>bold</b>')), {
     isElement: true,
     name: 'p',
     content: [{ _raw: '<b>bold</b>' }]
   })
-  expect(element('p', 'text', raw('<br>'), 'more')).toEqual({
+  assert.deepEqual(element('p', 'text', raw('<br>'), 'more'), {
     isElement: true,
     name: 'p',
     content: ['text', { _raw: '<br>' }, 'more']
   })
 })
 
-test('element', () => {
-  expect(element('p')).toEqual({
+void test('element', () => {
+  assert.deepEqual(element('p'), {
     isElement: true,
     name: 'p',
     content: []
   })
-  expect(element('p', 'hello')).toEqual({
+  assert.deepEqual(element('p', 'hello'), {
     isElement: true,
     name: 'p',
     content: ['hello']
   })
-  expect(element('p', 'hello', 'world')).toEqual({
+  assert.deepEqual(element('p', 'hello', 'world'), {
     isElement: true,
     name: 'p',
     content: ['hello', 'world']
   })
 })
 
-test('voidElement', () => {
-  expect(voidElement('br')).toEqual({ isElement: true, voidElement: true, name: 'br' })
-  expect(voidElement('img', { src: 'photo.jpg', alt: 'photo' })).toEqual({
+void test('voidElement', () => {
+  assert.deepEqual(voidElement('br'), { isElement: true, voidElement: true, name: 'br' })
+  assert.deepEqual(voidElement('img', { src: 'photo.jpg', alt: 'photo' }), {
     isElement: true,
     voidElement: true,
     name: 'img',
@@ -58,8 +59,8 @@ test('voidElement', () => {
   })
 })
 
-test('element with nesting', () => {
-  expect(element('div', element('p', 'hello'))).toEqual({
+void test('element with nesting', () => {
+  assert.deepEqual(element('div', element('p', 'hello')), {
     isElement: true,
     name: 'div',
     content: [
@@ -70,7 +71,7 @@ test('element with nesting', () => {
       }
     ]
   })
-  expect(element('div', element('p', 'hello'), element('p', 'world'))).toEqual({
+  assert.deepEqual(element('div', element('p', 'hello'), element('p', 'world')), {
     isElement: true,
     name: 'div',
     content: [
@@ -86,7 +87,7 @@ test('element with nesting', () => {
       }
     ]
   })
-  expect(element('div', element('p', 'hello'), 'new', element('p', 'world'))).toEqual({
+  assert.deepEqual(element('div', element('p', 'hello'), 'new', element('p', 'world')), {
     isElement: true,
     name: 'div',
     content: [
@@ -105,26 +106,26 @@ test('element with nesting', () => {
   })
 })
 
-test('elementWithAttributes', () => {
-  expect(element('p', { id: 'myTag' })).toEqual({
+void test('elementWithAttributes', () => {
+  assert.deepEqual(element('p', { id: 'myTag' }), {
     isElement: true,
     name: 'p',
     attributes: { id: 'myTag' },
     content: []
   })
-  expect(element('p', { id: 'myTag' }, 'hello')).toEqual({
+  assert.deepEqual(element('p', { id: 'myTag' }, 'hello'), {
     isElement: true,
     name: 'p',
     attributes: { id: 'myTag' },
     content: ['hello']
   })
-  expect(element('p', { id: 'myTag' }, 'hello', 'world')).toEqual({
+  assert.deepEqual(element('p', { id: 'myTag' }, 'hello', 'world'), {
     isElement: true,
     name: 'p',
     attributes: { id: 'myTag' },
     content: ['hello', 'world']
   })
-  expect(element('p', { id: 'myTag' }, 'hello', element('p', 'world'))).toEqual({
+  assert.deepEqual(element('p', { id: 'myTag' }, 'hello', element('p', 'world')), {
     isElement: true,
     name: 'p',
     attributes: { id: 'myTag' },
@@ -139,8 +140,8 @@ test('elementWithAttributes', () => {
   })
 })
 
-test('with attributes', () => {
-  expect(withAttributes({ class: 'myClass', id: 'pOne' }, p('Hello World'))).toEqual({
+void test('with attributes', () => {
+  assert.deepEqual(withAttributes({ class: 'myClass', id: 'pOne' }, p('Hello World')), {
     isElement: true,
     name: 'p',
     attributes: {
@@ -151,8 +152,8 @@ test('with attributes', () => {
   })
 })
 
-test('with options', () => {
-  expect(withOptions({ newLines: true }, element('p'))).toEqual({
+void test('with options', () => {
+  assert.deepEqual(withOptions({ newLines: true }, element('p')), {
     isElement: true,
     name: 'p',
     content: [],

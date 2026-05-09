@@ -24,6 +24,7 @@
     "allowJs": true,
 
     // ** Emit **
-    "noEmit": true
+    "noEmit": true,
+    "allowImportingTsExtensions": true
   }
 }

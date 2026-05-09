@@ -1,5 +1,5 @@
-import { HiccoughContent, HiccoughElement, HiccoughOptions, isRawHtml } from './hiccoughElement.js'
-import { Mandatory } from './util/types.js'
+import { type HiccoughContent, type HiccoughElement, type HiccoughOptions, isRawHtml } from './hiccoughElement.ts'
+import type { Mandatory } from './util/types.ts'
 
 export function html(input: HiccoughContent | HiccoughContent[], options: HiccoughOptions = {}): string {
   const fullOptions: InternalHiccoughOptions = {
