@@ -16,7 +16,7 @@ jobs:
 
       - uses: actions/setup-node@v6
         with:
-          node-version-file: '.nvmrc'
+          node-version: '24' # This is out of sync with project but here to fix NPM publishing (because comes with NPM 11)
           cache: 'npm'
           registry-url: https://registry.npmjs.org
 
